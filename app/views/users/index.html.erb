@@ -1,2 +1,27 @@
-<h1>Welcome</h1>
-<h2>Testing Oauth Logins & Redirects</h2>
+<div id='header'>
+</div>
+<%# if current_user.teacher? || current_user.is_admin? %>
+
+<%#= collection_select(:user, :course_id, current_user.courses_teaching, :id, :name) %>
+
+<table class='container-table'>
+  <tr class='headings'>
+    <th>Name</th>
+    <th>Homework</th>
+    <th>Quizzes</th>
+    <th>Attendance</th>
+    <th>One on Ones</th>
+  </tr>
+
+  <% @students.each do |student| %>
+  <tr class='student'>
+    <td><%= link_to student.first_name, student_path %></td>
+    <td><%= link_to student.homeworks.first, student.homeworks.first.github_repo %></td>
+    <td><%= link_to student.quizzes.first, student.quizzes.first.github_repo %></td>
+    <td><%= form_for student do |f| %><%= f.radio_button :absent %><%= f.radio_button :tardy %><%= f.radio_button :excused %><%= f.submit%><% end %></td>
+    <td><%= link_to student.one_on_ones_as_student.length, one_on_ones_path(student) %></td>
+  </tr>
+  <% end %>
+</table>
+
+<% end %>
