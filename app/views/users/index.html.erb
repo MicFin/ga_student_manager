@@ -1,8 +1,8 @@
 <div id='header'>
 </div>
-<%# if current_user.teacher? || current_user.is_admin? %>
+<% if current_user.teacher? || current_user.is_admin? %>
 
-<%#= collection_select(:user, :course_id, current_user.courses_teaching, :id, :name) %>
+<% collection_select(:user, :course_id, current_user.courses_teaching, :id, :name) %>
 
 <table class='container-table'>
   <tr class='headings'>
@@ -18,10 +18,22 @@
     <td><%= link_to student.first_name, student_path %></td>
     <td><%= link_to student.homeworks.first, student.homeworks.first.github_repo %></td>
     <td><%= link_to student.quizzes.first, student.quizzes.first.github_repo %></td>
-    <td><%= form_for student do |f| %><%= f.radio_button :absent %><%= f.radio_button :tardy %><%= f.radio_button :excused %><%= f.submit%><% end %></td>
+    <td><%= form_for student do |f| %><%= f.radio_button :absent %><%= f.radio_button :tardy %><%= f.radio_button :excused %><%= f.submit%>
+    <% end %></td>
+    <td><%= link_to student.one_on_ones_as_student.length, one_on_ones_path(student) %></td>
+  </tr>
+  <% elsif current_user.student? %>
+    <tr class='student'>
+    <td><%= link_to student.first_name, student_path %></td>
+    <td><%= link_to student.homeworks.first, student.homeworks.first.github_repo %></td>
+    <td><%= link_to student.quizzes.first, student.quizzes.first.github_repo %></td>
+    <td><%= form_for student do |f| %><%= f.radio_button :absent %><%= f.radio_button :tardy %><%= f.radio_button :excused %><%= f.submit%>
+    <% end %></td>
     <td><%= link_to student.one_on_ones_as_student.length, one_on_ones_path(student) %></td>
   </tr>
   <% end %>
 </table>
+
+
 
 <% end %>
